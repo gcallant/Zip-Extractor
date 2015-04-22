@@ -84,6 +84,11 @@ public class Keyboard
 							}
 					}while(checkInput);
 
+				if(keyboard != null)
+					{
+						keyboard.close();
+					}
+
 				return inputInt;
 			}
 
@@ -114,6 +119,11 @@ public class Keyboard
 							}
 					}
 
+				if(keyboard != null)
+					{
+						keyboard.close();
+					}
+
 				return inputInt;
 			}
 
@@ -140,6 +150,11 @@ public class Keyboard
 								keyboard.next(); //clears line buffer
 								System.out.println("Error: please input an integer.");
 							}
+					}
+
+				if(keyboard != null)
+					{
+						keyboard.close();
 					}
 
 				return inputInt;
@@ -170,6 +185,11 @@ public class Keyboard
 							}
 					}while(checkInput);
 
+				if(keyboard != null)
+					{
+						keyboard.close();
+					}
+
 				return inputLong;
 			}
 
@@ -195,6 +215,11 @@ public class Keyboard
 								keyboard.next(); //clears line buffer
 								System.out.println("Error: please input a valid floating value.");
 							}
+					}
+
+				if(keyboard != null)
+					{
+						keyboard.close();
 					}
 
 				return inputFloat;
@@ -224,6 +249,44 @@ public class Keyboard
 							}
 					}
 
+				if(keyboard != null)
+					{
+						keyboard.close();
+					}
+
 				return inputDouble;
 			}
+
+		public static char readCharacterFromUser (Scanner keyboard)
+			{
+				if(keyboard == null)
+					{
+						keyboard = new Scanner(System.in);
+					}
+
+				char inputChar = '0';
+				boolean checkInput = true; //If valid input is received, changes to false to break loop.
+
+				while (checkInput)
+					{
+						try
+							{
+								inputChar = keyboard.next().charAt(0);
+								checkInput = false;
+							}
+						catch(InputMismatchException ime)
+							{
+								keyboard.next(); //clears line buffer
+								System.out.println("Error: please input a valid char value.");
+							}
+					}
+
+				if(keyboard != null)
+					{
+						keyboard.close();
+					}
+
+				return inputChar;
+			}
+
 	}
