@@ -51,11 +51,7 @@ public class Keyboard
 							System.out.println("Attempting to catch using next...");
 							inputString = keyboard.next();
 						}
-				
-				if(keyboard != null)
-					{
-						keyboard.close();
-					}
+						
 				return inputString;
 			}
 
@@ -83,11 +79,6 @@ public class Keyboard
 								"between " + Integer.MIN_VALUE + " & " +Integer.MAX_VALUE);
 							}
 					}while(checkInput);
-
-				if(keyboard != null)
-					{
-						keyboard.close();
-					}
 
 				return inputInt;
 			}
@@ -119,11 +110,6 @@ public class Keyboard
 							}
 					}
 
-				if(keyboard != null)
-					{
-						keyboard.close();
-					}
-
 				return inputInt;
 			}
 
@@ -150,11 +136,6 @@ public class Keyboard
 								keyboard.next(); //clears line buffer
 								System.out.println("Error: please input an integer.");
 							}
-					}
-
-				if(keyboard != null)
-					{
-						keyboard.close();
 					}
 
 				return inputInt;
@@ -185,11 +166,6 @@ public class Keyboard
 							}
 					}while(checkInput);
 
-				if(keyboard != null)
-					{
-						keyboard.close();
-					}
-
 				return inputLong;
 			}
 
@@ -215,11 +191,6 @@ public class Keyboard
 								keyboard.next(); //clears line buffer
 								System.out.println("Error: please input a valid floating value.");
 							}
-					}
-
-				if(keyboard != null)
-					{
-						keyboard.close();
 					}
 
 				return inputFloat;
@@ -249,11 +220,6 @@ public class Keyboard
 							}
 					}
 
-				if(keyboard != null)
-					{
-						keyboard.close();
-					}
-
 				return inputDouble;
 			}
 
@@ -279,11 +245,6 @@ public class Keyboard
 								keyboard.next(); //clears line buffer
 								System.out.println("Error: please input a valid char value.");
 							}
-					}
-
-				if(keyboard != null)
-					{
-						keyboard.close();
 					}
 
 				return inputChar;
