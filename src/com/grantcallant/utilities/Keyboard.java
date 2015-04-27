@@ -160,7 +160,7 @@ public class Keyboard
 				return inputInt;
 			}
 
-		public static long readLongFromuser (Scanner keyboard)
+		public static long readLongFromUser (Scanner keyboard)
 			{
 				if(keyboard == null)
 					{
