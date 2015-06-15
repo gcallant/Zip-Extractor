@@ -1,5 +1,7 @@
 package com.grantcallant.utilities;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -28,72 +30,117 @@ limitations under the License.
 
 public class FileUtil
 {
-   
-   public static File openFile(String fileName)
+
+
+
+   //Prevents Instantiating a new object from this class
+   private FileUtil(){}
+
+
+   private static String getFileName (Scanner kb)
+       {
+           if(kb == null)
+               {
+                   kb = new Scanner(System.in);
+               }
+           String fileName = "";
+
+           System.out.println("Please enter the file pathname: ");
+           fileName = Keyboard.readStringFromUser(kb);
+           return fileName;
+       }
+
+    /**
+     * Opens a Java swing awt GUI to select a directory
+     * Allows JFileChooser to select directories, instead of only files.
+     * @see "https://docs.oracle.com/javase/tutorial/uiswing/components/filechooser.html"
+     * @return opened file for reading
+     */
+   public static File openFolderWithGUI()
+       {
+           final JFileChooser fileChooser = new JFileChooser();
+           fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+           fileChooser.setDialogTitle("Select Source Directory");
+           int returnVal = fileChooser.showOpenDialog(new Component() {});
+
+           File myFile = fileChooser.getSelectedFile();
+           return myFile;
+       }
+
+    /**
+     * Opens a file for reading from a fileName.
+     * @param fileName
+     * @return the opened file for reading
+     * @throws FileNotFoundException
+     */
+   public static File openFile(String fileName) throws FileNotFoundException
       {
-                  
-         Boolean choice = true; 
-         File fille = null;
-         Scanner fin = null;
          Scanner kbInput = new Scanner(System.in);
+         File inputFile = null;
+         char decide;
+
+         while(fileName.isEmpty() || fileName == null)
+             {
+                System.out.println("Sorry, no file path was entered " +
+                "Would you like to enter a new file path? \nEnter (y/n)");
+
+                 decide = Keyboard.readCharacterFromUser(kbInput);
+
+                 if(decide == 'y')
+                     {
+                         fileName = getFileName(kbInput);
+                     }
+                 else if (decide == 'n')
+                     {
+                         throw new FileNotFoundException("Could not find file: " +
+                                               "User Declined to input new path.");
+                     }
+                 else
+                     {
+                         System.out.println("Sorry, didn't understand that.");
+                     }
+             }
          
-         //Opens the file if it exists
-         try
-            {                         
-               fille = new File(fileName);
-               fin = new Scanner(fille);
-            }
+                //Opens the file if it exists
+
+               inputFile = new File(fileName);
             
-         catch(FileNotFoundException fnf)
-            {
-               //Clear buffer
-               //fin.next();
-               
+
                //If file doesn't exist, then asks if user wants to input
-               //One again- if the user decides no- program throws exception and exists.
-               while(choice)
+               //Once again- if the user decides no- program throws exception.
+               while(!inputFile.exists())
                   {
-                     try
-                        {
-                           System.out.println("Sorry, the file was not found "+
-                              "\nWould you like to try again? (yes/no)");
+                      System.out.println("Sorry, the file was not found "+
+                                 "\nWould you like to try again? \nEnter (y/n)");
+
+                           decide = Keyboard.readCharacterFromUser(kbInput);
                            
-                           String decide = "";
-                           decide = kbInput.nextLine();
-                           
-                           if(decide.equalsIgnoreCase("yes"))
+                           if(decide == 'y')
                               {
-                                 System.out.println("Enter filename: ");
-                                 fileName = kbInput.nextLine();            
-                                 fille = new File(fileName);
-                                 if(fille.exists())
-                                    {
-                                       choice = false;
-                                    }
-                                 fin = new Scanner(fille);
+                                 System.out.println("Enter file path: ");
+                                 fileName = Keyboard.readStringFromUser(kbInput);
+                                 inputFile = new File(fileName);
                               }
                               
-                          else if (decide.equalsIgnoreCase("no"))
+                          else if (decide == 'n')
                               {
-                                 choice = false;
+                                 throw new FileNotFoundException("Could not find file: " +
+                                 "User Declined to input new path.");
                               }
                           else
                               {
                                  System.out.println("Sorry, didn't understand that.");
                               }   
-                        }
-                     
-                     catch(Exception fnf2)
-                        {
-                           //We're going to loop through again.
-                        }
                   }
-                  
-            }
-         
-         return fille; 
-      } 
-      
+         return inputFile;
+      }
+
+
+    /**
+     * Counts the number of lines that are in an input file.
+     * @param fin
+     * @return the number of lines in the file
+     */
  public static int countFileLines (Scanner fin)
    {
       int count = 0;
@@ -102,55 +149,33 @@ public class FileUtil
             count++;
             fin.nextLine();   
          }
-         
-       fin.close();
-       
      return count;
    }
-   
- public static Date [] getDatesFromFile (int count, Scanner fin)
-   {
-      String [] temp = new String [count];
-      String [] dates = new String [count];
-      Date [] dateArray = new Date [count]; 
-      //Has to be big enough for each int to have its own index
-      
-      //Resets the cursor to the top line
-      count = 0;
-      while(fin.hasNextLine())
-         {
-            temp[count] = fin.nextLine();
-            count++;
-         }
-       
-      fin.close();
-      
-      
-      //Creates a String array composed of seperate date strings
-      //Per Index
-      for(int i = 0; i < dateArray.length; i++)
-         {
-            String str = temp[i];
-            dates = str.split("/");
-            dateArray[i] = new Date(Integer.parseInt(dates[0]), Integer.parseInt
-            (dates[1]), Integer.parseInt(dates[2]));
-         }
-      
-      
-      return dateArray;
-   }
-   
- public static void writeToFile (Date [] array, String fileName) throws Exception
-   {
-      File fn = new File(fileName);
-      
-      PrintWriter fout = new PrintWriter(fn);
-      
-      for(int i = 0; i < array.length; i++)
-         {
-            
-         }
-      
-      
-   }
+
+    /**
+     * Recursively counts the number of files that are contained in a folder
+     * and all subfolders. If the input file is null, calls openFile to get a new file path.
+      * @param inputFile
+     * @return the number of files contained in the specified pathname, including all
+     * @return subfolders. If the specified path is a file, returns one.
+     * @throws FileNotFoundException
+     */
+ public static int countFilesInFolder (File inputFile) throws FileNotFoundException
+     {
+         if(inputFile == null)
+             {
+                 inputFile = openFile(null);
+             }
+
+         if(inputFile.isFile())
+             {
+                 return 1;
+             }
+         else if(inputFile.isDirectory())
+             {
+
+             }
+         return 0;
+     }
+
 }

@@ -26,6 +26,10 @@ limitations under the License.
  */
 public class Keyboard
 	{
+
+		//Prevents Instantiating a new object from this class
+		private Keyboard(){}
+
 		public static String readStringFromUser (Scanner keyboard)
 			{
 				if(keyboard == null)
@@ -107,6 +111,40 @@ public class Keyboard
 								keyboard.next(); //clears line buffer
 								System.out.println("Error: please input a valid integer " +
 								"between 0 & " +Integer.MAX_VALUE);
+							}
+					}
+
+				return inputInt;
+			}
+
+		//Allows for a typical menu selection from user, between the firstOption
+		//and the last option. If user input is less than firstOption, or greater than
+		//lastOption, then it will print error and ask for re-input from user.
+		//Guarantees returned integer between, or equal to supplied values.
+
+		public static int readMenuOptionFromUser (Scanner keyboard, int firstOption, int lastOption)
+			{
+				if(keyboard == null)
+					{
+						keyboard = new Scanner(System.in);
+					}
+
+				int inputInt = -1;
+
+				while (inputInt < firstOption || inputInt > lastOption)
+					{
+						try
+							{
+								inputInt = keyboard.nextInt();
+								if(inputInt < firstOption || inputInt > lastOption)
+									System.out.printf("\nPlease input an integer between " +
+											                  "%d and %d.\n", firstOption, lastOption);
+							}
+						catch(InputMismatchException ime)
+							{
+								keyboard.next(); //clears line buffer
+								System.out.printf("\nPlease input an integer between " +
+										                  "%d and %d.\n", firstOption, lastOption);
 							}
 					}
 

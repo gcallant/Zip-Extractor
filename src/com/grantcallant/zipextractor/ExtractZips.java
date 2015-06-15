@@ -13,6 +13,10 @@ import java.util.Scanner;
  * @author Grant Callant
  *
  * Copyright 2015 Grant Callant
+ *
+ * This program makes substantial use of the Zip4j Open Source Library
+ * @see "http://www.lingala.net/zip4j/about.php"
+ * All references to Zip4j remain the property of Srikanth Reddy Lingala.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,61 +34,35 @@ public class ExtractZips
 	{
 		public static void main(String [] args)
 			{
-				String destination = null;
-				String pathName = null;
-				Scanner kb = new Scanner(System.in);
-
-				System.out.println("Please enter the directory name that " +
-						                   "your zip files are located in:\n");
-				pathName = Keyboard.readStringFromUser(kb);
+				//TODO: Refactor all calls from new classes
 
 
 
-				File file = new File(pathName);
-				ArrayList<File> list = new ArrayList<File>(3);
-
-				while(!file.exists())
-					{
-						System.out.println("That directory doesn't exist, try again.");
-						pathName = Keyboard.readStringFromUser(kb);
-						file = new File(pathName);
-					}
-
-				System.out.println("Enter the destination directory.");
-				destination = Keyboard.readStringFromUser(kb);
 
 
-
-				String [] src = null;//getAllFiles(file, list);
-
-
-				for(int i = 0; i < src.length; i++)
-					{
-						String source = null;
-						source = src[i];
 
 
 
 
 
 						//String password = "password";
-				for(int x = i; x <= i; x++)
+				for(int x = 0; x <= 0; x++)
 					{
 						try
 							{
-								ZipFile zipFile = new ZipFile(source);
+								ZipFile zipFile = new ZipFile("File Source");
 								if(zipFile.isEncrypted())
 									{
 										//zipFile.setPassword(password);
 									}
-								zipFile.extractAll(destination);
+								zipFile.extractAll("Destination path");
 							} catch(ZipException e)
 							{
 								e.printStackTrace();
 							}
 
 					}
-				}
+
 
 
 
