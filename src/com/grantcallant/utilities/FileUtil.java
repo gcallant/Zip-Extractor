@@ -30,9 +30,6 @@ limitations under the License.
 
 public class FileUtil
 {
-
-
-
    //Prevents Instantiating a new object from this class
    private FileUtil(){}
 
@@ -157,11 +154,14 @@ public class FileUtil
      * and all subfolders. If the input file is null, calls openFile to get a new file path.
       * @param inputFile
      * @return the number of files contained in the specified pathname, including all
-     * @return subfolders. If the specified path is a file, returns one.
+     * @return subfolders. If the specified path is a file, returns one. If no files in folder, returns 0.
      * @throws FileNotFoundException
      */
  public static int countFilesInFolder (File inputFile) throws FileNotFoundException
      {
+         int theCount = 0;
+
+         File temp = null;
          if(inputFile == null)
              {
                  inputFile = openFile(null);
@@ -174,8 +174,18 @@ public class FileUtil
          else if(inputFile.isDirectory())
              {
 
+                 File [] fileList = inputFile.listFiles();
+                if(fileList != null || fileList.length >= 1)
+                    {
+                        for(int i = 0; i < fileList.length; i++)
+                            {
+                                temp = fileList[i];
+                                theCount += countFilesInFolder(temp);
+                            }
+
+                    }
              }
-         return 0;
+         return theCount;
      }
 
 }
